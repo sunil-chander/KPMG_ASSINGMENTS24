@@ -1,0 +1,7 @@
+Initialize and Apply Terraform:
+
+Navigate to the terraform directory.
+
+Run terraform init to initialize the Terraform configuration.
+
+Run terraform apply to provision the infrastructure on Azure.

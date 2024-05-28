@@ -1,0 +1,5 @@
+
+# Replace <Public_IP>  with the actual public IP address output from Terraform.
+
+[wordpress]
+<Public_IP> ansible_user=azureuser ansible_password=Password123! ansible_connection=ssh

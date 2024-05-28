@@ -1,0 +1,20 @@
+Commit to GitHub:
+
+1. Initialize a new Git repository in the project directory:
+
+    git init
+
+
+2. Add all files to the repository:
+ 
+   git add .
+
+3. Commit the files 
+
+   git commit -am " code push to remote repo"
+
+4. Create a new repository on GitHub and push your local repository to GitHub:
+
+   git remote add origin https://github.com/sunil-chander/KPMG_ASSINGMENTS24
+   git push -u origin main
+

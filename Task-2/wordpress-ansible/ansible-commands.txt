@@ -1,0 +1,10 @@
+
+Update Ansible Hosts:
+
+Replace <Public_IP> in the ansible/hosts file with the actual public IP address output from Terraform.
+
+
+
+Run the following command to execute the Ansible playbook:
+
+ansible-playbook -i hosts playbook.yml
