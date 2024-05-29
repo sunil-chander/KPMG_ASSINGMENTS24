@@ -1,38 +1,38 @@
-resource "azurerm_resource_group" "main" {
+resource "azurerm_resource_group" "kpmg-rg" {
   name     = var.resource_group_name
   location = var.location
 }
 
-resource "azurerm_virtual_network" "main" {
+resource "azurerm_virtual_network" "kpmg-vnet" {
   name                = "wordpress-vnet"
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.kpmg-vnet.location
+  resource_group_name = azurerm_resource_group.kpmg-vnet.name
 }
 
-resource "azurerm_subnet" "main" {
+resource "azurerm_subnet" "kpmg-subnet" {
   name                 = "wordpress-subnet"
-  resource_group_name  = azurerm_resource_group.main.name
-  virtual_network_name = azurerm_virtual_network.main.name
+  resource_group_name  = azurerm_resource_group.kpmg-subnet.name
+  virtual_network_name = azurerm_virtual_network.kpmg-subnet.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-resource "azurerm_network_interface" "main" {
+resource "azurerm_network_interface" "kpmg-nic" {
   name                = "wordpress-nic"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.kpmg-nic.location
+  resource_group_name = azurerm_resource_group.kpmg-nic.name
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.main.id
+    subnet_id                     = azurerm_subnet.kpmg-nic.id
     private_ip_address_allocation = "Dynamic"
   }
 }
 
-resource "azurerm_network_security_group" "main" {
+resource "azurerm_network_security_group" "kpmg-nsg" {
   name                = "wordpress-nsg"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.kpmg-nsg.location
+  resource_group_name = azurerm_resource_group.kpmg-nsg.name
 
   security_rule {
     name                       = "allow_ssh"
@@ -71,11 +71,11 @@ resource "azurerm_public_ip" "main" {
   allocation_method   = "Dynamic"
 }
 
-resource "azurerm_virtual_machine" "main" {
+resource "azurerm_virtual_machine" "kpmg-vm1" {
   name                  = "wordpress-vm"
-  location              = azurerm_resource_group.main.location
-  resource_group_name   = azurerm_resource_group.main.name
-  network_interface_ids = [azurerm_network_interface.main.id]
+  location              = azurerm_resource_group.kpmg-vm1.location
+  resource_group_name   = azurerm_resource_group.kpmg-vm1.name
+  network_interface_ids = [azurerm_network_interface.kpmg-vm1.id]
   vm_size               = "Standard_B1s"
 
   storage_os_disk {
