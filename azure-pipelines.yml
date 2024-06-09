@@ -12,7 +12,6 @@ pool:
 steps:
 
 - checkout: self
-
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'Task-2'
