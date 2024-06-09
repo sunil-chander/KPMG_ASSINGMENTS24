@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: KPMG-agent-pool
+ name: KPMG-agent-pool
 
 steps:
 - script: echo Hello, world!
