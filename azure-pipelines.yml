@@ -10,10 +10,79 @@ pool:
  name: KPMG-agent-pool
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+
+- checkout: self
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'Task-2'
+    Contents: '**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'kpmg-terraform-spn'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az login --service-principal -u $(servicePrincipalId) -p $(servicePrincipalKey) --tenant $(tenantId)
+      az account set --subscription $(subscriptionId)
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    # Install unzip if not already installed
+    sudo apt-get update && sudo apt-get install -y unzip
+
+    # Download and install Terraform
+    wget https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip
+    /usr/bin/unzip terraform_0.15.5_linux_amd64.zip
+    sudo mv terraform /usr/local/bin/
+    terraform --version  # Verify Terraform installation
+  displayName: 'Install Terraform'
+
+    
+
+- task: TerraformTaskV4@4
+  displayName: Terraform init
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: '$(build.artifactstagingdirectory)'
+    backendServiceArm: 'kpmg-terraform-spn'
+    backendAzureRmResourceGroupName: 'sql-rg'
+    backendAzureRmStorageAccountName: 'terrastatefilebighand'
+    backendAzureRmContainerName: 'kpmgcontainer'
+    backendAzureRmKey: 'kpmg-assignment/tfstate'
+
+- task: TerraformTaskV4@4
+  displayName: Terraform validate
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+    workingDirectory: '$(build.artifactstagingdirectory)'
+
+- task: TerraformTaskV4@4
+  displayName: Terraform format
+  inputs:
+    provider: 'azurerm'
+    command: 'custom'
+    workingDirectory: '$(build.artifactstagingdirectory)'
+    customCommand: 'fmt'
+    outputTo: console
+    environmentServiceNameAzureRM: 'kpmg-terraform-spn'
+
+- task: TerraformTaskV4@4
+  displayName: Terraform plan
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(build.artifactstagingdirectory)'
+    environmentServiceNameAzureRM: 'kpmg-terraform-spn'
+    
+- task: TerraformTaskV4@4
+  displayName: Terraform apply
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    workingDirectory: '$(build.artifactstagingdirectory)'
+    environmentServiceNameAzureRM: 'kpmg-terraform-spn'
+
