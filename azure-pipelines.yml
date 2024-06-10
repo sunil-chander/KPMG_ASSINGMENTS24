@@ -56,7 +56,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    workingDirectory: '$(build.artifactstagingdirectory)'
+    workingDirectory: '$(build.artifactstagingdirectory)/wordpress-terraform'
     backendServiceArm: 'kpmg-terraform-spn'
     backendAzureRmResourceGroupName: 'sql-rg'
     backendAzureRmStorageAccountName: 'terrastatefilebighand'
@@ -68,14 +68,14 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'validate'
-    workingDirectory: '$(build.artifactstagingdirectory)'
+    workingDirectory: '$(build.artifactstagingdirectory)/wordpress-terraform'
 
 - task: TerraformTaskV4@4
   displayName: Terraform format
   inputs:
     provider: 'azurerm'
     command: 'custom'
-    workingDirectory: '$(build.artifactstagingdirectory)'
+    workingDirectory: '$(build.artifactstagingdirectory)/wordpress-terraform'
     customCommand: 'fmt'
     outputTo: console
     environmentServiceNameAzureRM: 'kpmg-terraform-spn'
@@ -85,7 +85,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    workingDirectory: '$(build.artifactstagingdirectory)'
+    workingDirectory: '$(build.artifactstagingdirectory)/wordpress-terraform'
     environmentServiceNameAzureRM: 'kpmg-terraform-spn'
     
 - task: TerraformTaskV4@4
@@ -93,6 +93,6 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'apply'
-    workingDirectory: '$(build.artifactstagingdirectory)'
+    workingDirectory: '$(build.artifactstagingdirectory)/wordpress-terraform'
     environmentServiceNameAzureRM: 'kpmg-terraform-spn'
 
