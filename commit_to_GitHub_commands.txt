@@ -1,5 +1,7 @@
 Commit to GitHub:
 
+testing-1
+
 1. Initialize a new Git repository in the project directory:
 
     git init
