@@ -65,18 +65,20 @@ resource "azurerm_network_interface_security_group_association" "main" {
 }
 
 resource "azurerm_public_ip" "pip" {
+  count               = var.create_public_ip ? 1 : 0
   name                = "wordpress-pip"
   location            = azurerm_resource_group.kpmg-rg.location
   resource_group_name = azurerm_resource_group.kpmg-rg.name
   allocation_method   = "Dynamic"
 }
 
+
 resource "azurerm_virtual_machine" "kpmg-vm1" {
   name                  = "wordpress-vm"
   location              = azurerm_resource_group.kpmg-rg.location
   resource_group_name   = azurerm_resource_group.kpmg-rg.name
-  network_interface_ids = [azurerm_network_interface.kpmg-nic.id]
-  vm_size               = "Standard_B1s"
+  network_interface_ids = [azurerm_network_interface.kpmg-vm1.id]
+  vm_size               = var.vm_size
 
   storage_os_disk {
     name              = "wordpress-osdisk"
@@ -109,3 +111,4 @@ resource "azurerm_virtual_machine" "kpmg-vm1" {
     host     = azurerm_public_ip.main.ip_address
   }
 }
+

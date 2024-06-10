@@ -21,3 +21,8 @@ variable "admin_password" {
   type        = string
   default     = "Password123!"
 }
+
+variable "vm_size" {
+  type    = string
+  default = "Standard_B1s"
+}
