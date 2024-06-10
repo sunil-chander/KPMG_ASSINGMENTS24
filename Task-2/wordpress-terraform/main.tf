@@ -77,7 +77,7 @@ resource "azurerm_virtual_machine" "kpmg-vm1" {
   name                  = "wordpress-vm"
   location              = azurerm_resource_group.kpmg-rg.location
   resource_group_name   = azurerm_resource_group.kpmg-rg.name
-  network_interface_ids = [azurerm_network_interface.kpmg-vm1.id]
+  network_interface_ids = [azurerm_network_interface.kpmg-nic.id]
   vm_size               = var.vm_size
 
   storage_os_disk {
@@ -108,7 +108,7 @@ resource "azurerm_virtual_machine" "kpmg-vm1" {
     type     = "ssh"
     user     = var.admin_username
     password = var.admin_password
-    host     = azurerm_public_ip.main.ip_address
+    host     = azurerm_public_ip.pip.ip_address
   }
 }
 
