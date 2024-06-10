@@ -45,22 +45,10 @@ steps:
       az login --service-principal -u $(servicePrincipalId) -p $(servicePrincipalKey) --tenant $(tenantId)
       az account set --subscription $(subscriptionId)
 
-- task: PowerShell@2
+- task: TerraformInstaller@1
+  displayName: Terraform install
   inputs:
-    targetType: 'inline'
-    script: |
-      # Download and install Terraform
-      $terraformUrl = "https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_windows_amd64.zip"
-      $terraformZipPath = "$(Agent.ToolsDirectory)\terraform.zip"
-      $terraformExtractPath = "$(Agent.ToolsDirectory)\terraform"
-
-      Invoke-WebRequest -Uri $terraformUrl -OutFile $terraformZipPath
-      Expand-Archive -Path $terraformZipPath -DestinationPath $terraformExtractPath -Force
-
-      # Move Terraform executable to a directory in PATH
-      Move-Item -Path "$terraformExtractPath\terraform.exe" -Destination "C:\Windows\System32\terraform.exe" -Force
-      terraform --version  # Verify Terraform installation
-  displayName: 'Install Terraform'
+    terraformVersion: 'latest'
     
 
 - task: TerraformTaskV4@4
