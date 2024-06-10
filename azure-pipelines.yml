@@ -38,12 +38,10 @@ steps:
   displayName: 'Check Azure CLI version'
 
   
-- task: AzureCLI@2
+- task: PowerShell@2
   inputs:
-    azureSubscription: 'kpmg-terraform-spn'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
+    targetType: 'inline'
+    script: |
       az login --service-principal -u $(servicePrincipalId) -p $(servicePrincipalKey) --tenant $(tenantId)
       az account set --subscription $(subscriptionId)
 
