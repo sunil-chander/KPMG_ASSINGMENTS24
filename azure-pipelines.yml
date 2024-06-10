@@ -55,10 +55,10 @@ steps:
       $terraformExtractPath = "$(Agent.ToolsDirectory)\terraform"
 
       Invoke-WebRequest -Uri $terraformUrl -OutFile $terraformZipPath
-      Expand-Archive -Path $terraformZipPath -DestinationPath $terraformExtractPath
+      Expand-Archive -Path $terraformZipPath -DestinationPath $terraformExtractPath -Force
 
       # Move Terraform executable to a directory in PATH
-      Move-Item -Path "$terraformExtractPath\terraform.exe" -Destination "C:\Windows\System32\terraform.exe"
+      Move-Item -Path "$terraformExtractPath\terraform.exe" -Destination "C:\Windows\System32\terraform.exe" -Force
       terraform --version  # Verify Terraform installation
   displayName: 'Install Terraform'
     
