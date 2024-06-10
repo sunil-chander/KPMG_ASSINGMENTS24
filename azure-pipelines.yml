@@ -27,12 +27,13 @@ steps:
       
       # Install Azure CLI silently
       Start-Process msiexec.exe -ArgumentList '/i', "$(Agent.ToolsDirectory)\AzureCLI.msi", '/quiet', '/norestart' -NoNewWindow -Wait
+  displayName: 'Install Azure CLI'
 
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
     script: |
-      
+      # Check Azure CLI version
       az --version
   displayName: 'Check Azure CLI version'
 
@@ -46,17 +47,19 @@ steps:
       az login --service-principal -u $(servicePrincipalId) -p $(servicePrincipalKey) --tenant $(tenantId)
       az account set --subscription $(subscriptionId)
 
-- script: |
-    # Install unzip if not already installed
-    sudo apt-get update && sudo apt-get install -y unzip
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Install unzip if not already installed
+      sudo apt-get update && sudo apt-get install -y unzip
 
-    # Download and install Terraform
-    wget https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip
-    /usr/bin/unzip terraform_0.15.5_linux_amd64.zip
-    sudo mv terraform /usr/local/bin/
-    terraform --version  # Verify Terraform installation
+      # Download and install Terraform
+      wget https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip
+      /usr/bin/unzip terraform_0.15.5_linux_amd64.zip
+      sudo mv terraform /usr/local/bin/
+      terraform --version  # Verify Terraform installation
   displayName: 'Install Terraform'
-
     
 
 - task: TerraformTaskV4@4
