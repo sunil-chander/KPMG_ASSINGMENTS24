@@ -63,6 +63,14 @@ steps:
     backendAzureRmContainerName: 'kpmgcontainer'
     backendAzureRmKey: 'kpmg-assignment/tfstate'
 
+- task: TerraformTaskV1@0
+  displayName: 'Terraform Import'
+  inputs:
+    provider: 'azurerm'
+    command: 'import'
+    workingDirectory: '$(build.artifactstagingdirectory)/wordpress-terraform'
+    arguments: 'azurerm_resource_group.kpmg-rg /subscriptions/54e8d3d3-ef28-44c4-a74b-2f0d89a1fc16/resourceGroups/wordpress-rg'
+
 - task: TerraformTaskV4@4
   displayName: Terraform validate
   inputs:
