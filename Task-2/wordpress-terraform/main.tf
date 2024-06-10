@@ -64,7 +64,7 @@ resource "azurerm_network_interface_security_group_association" "main" {
   network_security_group_id = azurerm_network_security_group.kpmg-nsg.id
 }
 
-resource "azurerm_public_ip" "main" {
+resource "azurerm_public_ip" "pip" {
   name                = "wordpress-pip"
   location            = azurerm_resource_group.kpmg-rg.location
   resource_group_name = azurerm_resource_group.kpmg-rg.name
