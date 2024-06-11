@@ -101,3 +101,17 @@ steps:
     workingDirectory: '$(build.artifactstagingdirectory)/wordpress-terraform'
     environmentServiceNameAzureRM: 'kpmg-terraform-spn'
 
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $publicIp = $(terraform output -raw public_ip_address)
+      $url = "http://$publicIp"
+      $response = Invoke-WebRequest -Uri $url
+      if ($response.StatusCode -eq 200) {
+        Write-Output "WordPress is up and running."
+      } else {
+        throw "Failed to access WordPress."
+      }
+  displayName: 'Verify WordPress Deployment'

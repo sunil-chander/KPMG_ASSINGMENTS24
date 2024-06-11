@@ -1,8 +1,10 @@
+# Define the resource group
 resource "azurerm_resource_group" "kpmg-rg" {
   name     = var.resource_group_name
   location = var.location
 }
 
+# Define the virtual network
 resource "azurerm_virtual_network" "kpmg-vnet2" {
   name                = "wordpress-vnet3"
   address_space       = ["10.0.0.0/16"]
@@ -10,6 +12,7 @@ resource "azurerm_virtual_network" "kpmg-vnet2" {
   resource_group_name = azurerm_resource_group.kpmg-rg.name
 }
 
+# Define the subnet
 resource "azurerm_subnet" "kpmg-subnet" {
   name                 = "wordpress-subnet"
   resource_group_name  = azurerm_resource_group.kpmg-rg.name
@@ -17,6 +20,15 @@ resource "azurerm_subnet" "kpmg-subnet" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
+# Define the public IP address
+resource "azurerm_public_ip" "pip" {
+  name                = "wordpress-pip3"
+  location            = azurerm_resource_group.kpmg-rg.location
+  resource_group_name = azurerm_resource_group.kpmg-rg.name
+  allocation_method   = "Dynamic"
+}
+
+# Define the network interface
 resource "azurerm_network_interface" "kpmg-nic" {
   name                = "wordpress-nic2"
   location            = azurerm_resource_group.kpmg-rg.location
@@ -26,9 +38,11 @@ resource "azurerm_network_interface" "kpmg-nic" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.kpmg-subnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.pip.id
   }
 }
 
+# Define the network security group
 resource "azurerm_network_security_group" "kpmg-nsg2" {
   name                = "wordpress-nsg3"
   location            = azurerm_resource_group.kpmg-rg.location
@@ -59,19 +73,13 @@ resource "azurerm_network_security_group" "kpmg-nsg2" {
   }
 }
 
+# Associate NSG with NIC
 resource "azurerm_network_interface_security_group_association" "main" {
   network_interface_id      = azurerm_network_interface.kpmg-nic.id
   network_security_group_id = azurerm_network_security_group.kpmg-nsg2.id
 }
 
-resource "azurerm_public_ip" "pip" {
-  count               = var.create_public_ip ? 1 : 0
-  name                = "wordpress-pip3"
-  location            = "West Europe"
-  resource_group_name = azurerm_resource_group.kpmg-rg.name
-  allocation_method   = "Dynamic"
-}
-
+# Define the virtual machine
 resource "azurerm_virtual_machine" "kpmg-vm1" {
   name                  = "wordpress-vm"
   location              = azurerm_resource_group.kpmg-rg.location
@@ -107,7 +115,7 @@ resource "azurerm_virtual_machine" "kpmg-vm1" {
     type     = "ssh"
     user     = var.admin_username
     password = var.admin_password
-    host     = azurerm_public_ip.pip[0].ip_address
+    host     = azurerm_public_ip.pip.ip_address
   }
 
   provisioner "remote-exec" {
@@ -124,4 +132,9 @@ resource "azurerm_virtual_machine" "kpmg-vm1" {
       "sudo systemctl restart apache2"
     ]
   }
+}
+
+# Output the public IP address
+output "public_ip_address" {
+  value = azurerm_public_ip.pip.ip_address
 }
