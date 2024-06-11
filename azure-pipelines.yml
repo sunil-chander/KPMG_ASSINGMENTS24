@@ -75,25 +75,7 @@ steps:
       outputTo: 'console'
       environmentServiceNameAzureRM: 'kpmg-terraform-spn'
 
-- task: TerraformTaskV4@4
-  displayName: 'Terraform Import Network Security Group'
-  inputs:
-    provider: 'azurerm'
-    command: 'custom'
-    workingDirectory: '$(build.artifactstagingdirectory)/wordpress-terraform'
-    customCommand: 'import'
-    commandOptions: 'azurerm_network_security_group.wordpress-nsg /subscriptions/54e8d3d3-ef28-44c4-a74b-2f0d89a1fc16/resourceGroups/wordpress-rg/providers/Microsoft.Network/networkSecurityGroups/wordpress-nsg'
-    environmentServiceNameAzureRM: 'kpmg-terraform-spn'
 
-- task: TerraformTaskV4@4
-  displayName: 'Terraform Import Virtual Network'
-  inputs:
-    provider: 'azurerm'
-    command: 'custom'
-    workingDirectory: '$(build.artifactstagingdirectory)/wordpress-terraform'
-    customCommand: 'import'
-    commandOptions: 'azurerm_virtual_network.wordpress-vnet /subscriptions/54e8d3d3-ef28-44c4-a74b-2f0d89a1fc16/resourceGroups/wordpress-rg/providers/Microsoft.Network/virtualNetworks/wordpress-vnet'
-    environmentServiceNameAzureRM: 'kpmg-terraform-spn'
 
 - task: TerraformTaskV4@4
   displayName: Terraform validate

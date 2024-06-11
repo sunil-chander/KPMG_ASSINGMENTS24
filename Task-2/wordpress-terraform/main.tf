@@ -3,8 +3,8 @@ resource "azurerm_resource_group" "kpmg-rg" {
   location = var.location
 }
 
-resource "azurerm_virtual_network" "kpmg-vnet" {
-  name                = "wordpress-vnet"
+resource "azurerm_virtual_network" "kpmg-vnet2" {
+  name                = "wordpress-vnet2"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.kpmg-rg.location
   resource_group_name = azurerm_resource_group.kpmg-rg.name
@@ -13,7 +13,7 @@ resource "azurerm_virtual_network" "kpmg-vnet" {
 resource "azurerm_subnet" "kpmg-subnet" {
   name                 = "wordpress-subnet"
   resource_group_name  = azurerm_resource_group.kpmg-rg.name
-  virtual_network_name = azurerm_virtual_network.kpmg-vnet.name
+  virtual_network_name = azurerm_virtual_network.kpmg-vnet2.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
@@ -29,8 +29,8 @@ resource "azurerm_network_interface" "kpmg-nic" {
   }
 }
 
-resource "azurerm_network_security_group" "kpmg-nsg" {
-  name                = "wordpress-nsg"
+resource "azurerm_network_security_group" "kpmg-nsg2" {
+  name                = "wordpress-nsg2"
   location            = azurerm_resource_group.kpmg-rg.location
   resource_group_name = azurerm_resource_group.kpmg-rg.name
 
@@ -61,7 +61,7 @@ resource "azurerm_network_security_group" "kpmg-nsg" {
 
 resource "azurerm_network_interface_security_group_association" "main" {
   network_interface_id      = azurerm_network_interface.kpmg-nic.id
-  network_security_group_id = azurerm_network_security_group.kpmg-nsg.id
+  network_security_group_id = azurerm_network_security_group.kpmg-nsg2.id
 }
 
 resource "azurerm_public_ip" "pip" {
