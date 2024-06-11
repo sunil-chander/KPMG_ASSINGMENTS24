@@ -72,7 +72,6 @@ resource "azurerm_public_ip" "pip" {
   allocation_method   = "Dynamic"
 }
 
-
 resource "azurerm_virtual_machine" "kpmg-vm1" {
   name                  = "wordpress-vm"
   location              = azurerm_resource_group.kpmg-rg.location
