@@ -107,7 +107,7 @@ resource "azurerm_virtual_machine" "kpmg-vm1" {
     type     = "ssh"
     user     = var.admin_username
     password = var.admin_password
-    host     = azurerm_public_ip.pip.ip_address
+    host     = azurerm_public_ip.pip[0].ip_address
   }
 
   provisioner "remote-exec" {
@@ -125,4 +125,3 @@ resource "azurerm_virtual_machine" "kpmg-vm1" {
     ]
   }
 }
-
