@@ -67,7 +67,7 @@ resource "azurerm_network_interface_security_group_association" "main" {
 resource "azurerm_public_ip" "pip" {
   count               = var.create_public_ip ? 1 : 0
   name                = "wordpress-pip"
-  location            = azurerm_resource_group.kpmg-rg.location
+  location            = "West Europe"
   resource_group_name = azurerm_resource_group.kpmg-rg.name
   allocation_method   = "Dynamic"
 }
