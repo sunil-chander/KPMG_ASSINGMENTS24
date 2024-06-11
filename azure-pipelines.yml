@@ -63,7 +63,7 @@ steps:
     backendAzureRmContainerName: 'kpmgcontainer'
     backendAzureRmKey: 'kpmg-assignment/tfstate'
 
-- task: TerraformTaskV1@4
+- task: TerraformTaskV4@4
   displayName: 'Terraform Import'
   inputs:
     provider: 'azurerm'
