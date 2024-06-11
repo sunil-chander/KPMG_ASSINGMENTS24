@@ -109,5 +109,20 @@ resource "azurerm_virtual_machine" "kpmg-vm1" {
     password = var.admin_password
     host     = azurerm_public_ip.pip.ip_address
   }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt update -y",
+      "sudo apt install -y apache2 mysql-server php php-mysql libapache2-mod-php",
+      "sudo systemctl start apache2",
+      "sudo systemctl enable apache2",
+      "curl -O https://wordpress.org/latest.tar.gz",
+      "tar -xzf latest.tar.gz",
+      "sudo cp -r wordpress/* /var/www/html/",
+      "sudo chown -R www-data:www-data /var/www/html/",
+      "sudo chmod -R 755 /var/www/html/",
+      "sudo systemctl restart apache2"
+    ]
+  }
 }
 
