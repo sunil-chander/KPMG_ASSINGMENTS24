@@ -61,7 +61,7 @@ steps:
     backendAzureRmResourceGroupName: 'sql-rg'
     backendAzureRmStorageAccountName: 'terrastatefilebighand'
     backendAzureRmContainerName: 'kpmgcontainer'
-    backendAzureRmKey: 'kpmg-assignment/tfstate'
+    backendAzureRmKey: 'kpmg/kpmg.terraform.tfstate'
 
 
 - task: TerraformTaskV4@4

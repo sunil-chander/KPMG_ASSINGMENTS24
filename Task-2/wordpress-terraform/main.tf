@@ -18,7 +18,7 @@ resource "azurerm_subnet" "kpmg-subnet" {
 }
 
 resource "azurerm_network_interface" "kpmg-nic" {
-  name                = "wordpress-nic"
+  name                = "wordpress-nic2"
   location            = azurerm_resource_group.kpmg-rg.location
   resource_group_name = azurerm_resource_group.kpmg-rg.name
 
