@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "kpmg-rg" {
 }
 
 resource "azurerm_virtual_network" "kpmg-vnet2" {
-  name                = "wordpress-vnet2"
+  name                = "wordpress-vnet3"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.kpmg-rg.location
   resource_group_name = azurerm_resource_group.kpmg-rg.name
@@ -30,7 +30,7 @@ resource "azurerm_network_interface" "kpmg-nic" {
 }
 
 resource "azurerm_network_security_group" "kpmg-nsg2" {
-  name                = "wordpress-nsg2"
+  name                = "wordpress-nsg3"
   location            = azurerm_resource_group.kpmg-rg.location
   resource_group_name = azurerm_resource_group.kpmg-rg.name
 
@@ -66,7 +66,7 @@ resource "azurerm_network_interface_security_group_association" "main" {
 
 resource "azurerm_public_ip" "pip" {
   count               = var.create_public_ip ? 1 : 0
-  name                = "wordpress-pip"
+  name                = "wordpress-pip3"
   location            = "West Europe"
   resource_group_name = azurerm_resource_group.kpmg-rg.name
   allocation_method   = "Dynamic"
